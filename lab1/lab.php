@@ -2,13 +2,14 @@
 session_start();
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['x'], $_POST['y'], $_POST['r'])) {
-        $x = floatval($_POST['x']);
-        $y = floatval($_POST['y']);
-        $r = floatval($_POST['r']);
-
-        if (is_numeric($x) && is_numeric($y) && is_numeric($r) && $r > 0 && $r <= 5 && abs($x) <= 2 && abs($y) <= 5) {
+        
+        $x = $_POST['x'];
+        $y = $_POST['y'];
+        $r = $_POST['r'];
+        
+        if (is_numeric($x) && is_numeric($y) && is_numeric($r) && $r > 0 && $r <= 5 && abs($x) <= 2 && $y < 5 && $y > -5) {
             $result = is_point_in_area($x, $y, $r);
             $_SESSION['points'][] = [
                 'x' => $x,
@@ -25,18 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
 function is_point_in_area($x, $y, $r)
 {
     if ($x >= -$r / 2 && $x <= 0 && $y >= 0 && $y <= $r) {
         return true;
     }
-    if ($x >= 0 && $x <= $r && $y >= 0 && $y <= $r / 2) {
+    if($x * $x + $y * $y <= $r * $r && $x <= 0 && $y <= 0){
         return true;
     }
-    if ($x >= 0 && $y >= 0 && $x + $y <= $r) {
+    if($x <= $r && $y >= -1 * $r && $y <= 0){
         return true;
     }
-
     return false;
 }
 
@@ -47,10 +48,8 @@ function is_point_in_area($x, $y, $r)
 
 <head>
     <meta charset="UTF-8">
-    <title>Лаба</title>
-
-    <style>
-        body {
+<style>
+    body {
             font-family: serif;
             color: #333;
             font-size: 16px;
@@ -59,13 +58,18 @@ function is_point_in_area($x, $y, $r)
         }
 
         h1 {
-            margin-bottom: 20px;
+            font-family: serif;
+            margin-bottom: 18px;
+            color: #333;
+            font-size: 14px;
+            margin: 0;
+            padding: 18px;
         }
 
         table {
-            width: 50%;
+            width: 100%;
             border-collapse: collapse;
-            margin-bottom: 1px;
+            margin-bottom: 20px;
         }
 
         th, td {
@@ -96,8 +100,27 @@ function is_point_in_area($x, $y, $r)
             cursor: pointer;
         }
 
+        table[type="userInputTable"] {
+            background-color: blueviolet;
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table[type="userInputTable"] th {
+            background-color: blueviolet;
+        }
+
+        .highlight > h1{
+            background-color: yellow;
+        }
+
         .error {
             color: red;
+        }
+
+        .info {
+            font-style: italic;
         }
     </style>
 </head>
@@ -108,7 +131,7 @@ function is_point_in_area($x, $y, $r)
 <p><img src="2.jpg"></p>
 
 <?php if (isset($_SESSION['points']) && !empty($_SESSION['points'])): ?>
-    <h2>Результаты</h2>
+    <h2 class = "highlight">Результаты</h2>
     <table>
         <thead>
         <tr>
@@ -117,7 +140,7 @@ function is_point_in_area($x, $y, $r)
             <th>Радиус R</th>
             <th>Результат</th>
             <th>Дата и время</th>
-            <th>Время выполнения</th>
+            <td> Время выполнения</td>
         </tr>
         </thead>
         <tbody>
@@ -136,23 +159,118 @@ function is_point_in_area($x, $y, $r)
 <?php endif; ?>
 
 <h2>Проверка точки</h2>
+<script> jQuery(document).ready(function($) {
+  $('#submit').prop({disabled: true});
+  $('input[type="checkbox"]').change(function() {
+    $('#submit').prop({disabled: false});
+  });
+});</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-    <label for="x">Координата X:</label>
-    <input type="number" id="x" name="x" required>
-    <label for="y">Координата Y:</label>
-    <input type="number" id="y" name="y" required>
-    <label for="r">Радиус R:</label>
-    <input type="number" id="r" name="r" required>
-    <input type="submit" value="Проверить">
-</form>
+            <table id="userInputTable">
+                <tr class="form">
+                    <th class="form" id="formFirstColumn">
+                        <p>Выберите значение <strong>X</strong>:</p>
 
+                        <input type="checkbox" id="x" name="x" value=-2>
+                        <label for="x">-2</label>
+                        <br>
+
+                        <input type="checkbox" id="x" name="x" value=-1.5>
+                        <label for="x">-1.5</label>
+                        <br>
+
+                        <input type="checkbox" id="x" name="x" value=-1>
+                        <label for="x">-1</label>
+                        <br>
+
+                        <input type="checkbox" id="x" name="x" value=-0.5>
+                        <label for="x">-0.5</label>
+                        <br>
+
+                        <input type="checkbox" id="x" name="x" value=0>
+                        <label for="x">0</label>
+                        <br>
+
+                        <input type="checkbox" id="x" name="x" value=0.5>
+                        <label for="x">0.5</label>
+                        <br>
+
+                        <input type="checkbox" id="x" name="x" value=1>
+                        <label for="x">1</label>
+                        <br>
+
+                        <input type="checkbox" id="x" name="x" value=1.5>
+                        <label for="x">1.5</label>
+                        <br>
+
+                        <input type="checkbox" id="x" name="x" value=2>
+                        <label for="x">2</label>
+                    </th>
+                    <script>
+        const checkboxes = document.querySelectorAll('input[name="x"]');
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+                checkboxes.forEach((cb) => {
+                    if (cb !== checkbox) {
+                        cb.checked = false;
+                    }
+                });
+            });
+        });
+    </script>
+
+                    <td class="form">
+                        <p>Введите значение <strong>Y</strong>:</p>
+                        <input type="text" id="y" name="y" class="text-input" />
+                        <br>
+                    </td>
+
+                    <th class="form">
+                        <p>Выберите значение <strong>R</strong>:</p>
+
+                        <input type="checkbox" id="r" name="r" value=1>
+                        <label for="1">1</label>
+                        <br>
+
+                        <input type="checkbox" id="r" name="r" value=2>
+                        <label for="r">2</label>
+                        <br>
+
+                        <input type="checkbox" id="r" name="r" value=3>
+                        <label for="r">3</label>
+                        <br>
+
+                        <input type="checkbox" id="r" name="r" value=4>
+                        <label for="r">4</label>
+                        <br>
+
+                        <input type="checkbox" id="r" name="r" value=5>
+                        <label for="r">5</label>
+                    </th>
+                    <script>
+        const checkboxe = document.querySelectorAll('input[name="r"]');
+        checkboxe.forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+                checkboxe.forEach((cb) => {
+                    if (cb !== checkbox) {
+                        cb.checked = false;
+                    }
+                });
+            });
+        });
+    </script>
+                    <td><input type="submit" value="Проверить"></td>
+                </tr>
+            </table>
+</form>
 <script>
-    document.querySelector('form').addEventListener('submit', function (e) {
+    document.querySelector('queryForm').addEventListener('submit', function (e) {
         var x = parseFloat(document.getElementById('x').value);
         var y = parseFloat(document.getElementById('y').value);
         var r = parseFloat(document.getElementById('r').value);
 
-        if (isNaN(x) || isNaN(y) || isNaN(r)) {
+        if (isNaN(x) || isNaN(y) || isNaN(r) || r < 0 && r > 5 && abs(x) > 2 && y > 5 || y < -5 ) {
             e.preventDefault();
             document.getElementById('validation-error').classList.remove('hidden');
         }
