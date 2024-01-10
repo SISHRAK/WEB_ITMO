@@ -10,7 +10,7 @@
         <property name="connection.driver_class">org.postgresql.Driver</property>
         <property name="connection.url">jdbc:postgresql://localhost:5432/postgres</property>
         <property name="connection.username">sishrak</property>
-        <property name="connection.password">Ars220104</property>
+        <property name="connection.password">password</property>
         <property name="hibernate.current_session_context_class">thread</property>
 
         <!-- SQL dialect -->
