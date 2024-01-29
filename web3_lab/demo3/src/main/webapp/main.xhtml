@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html style="height: 100%; width: 100%" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+    <title>Webchik 3</title>
+    <link rel="stylesheet" type="text/css" href="mainPageStyle.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&#38;display=swap" rel="stylesheet"/>
+</h:head>
+
+<body>
+<div class="wrapper">
+    <header class="header">
+        <h2 class="label">Лабораторная #3</h2>
+
+        <h:link outcome="start_page">
+            <h:graphicImage value="${pageContext.request.contextPath}/resources/images/main3.svg"
+                            id="logo" class="logo" alt="userIcon"/>
+        </h:link>
+
+        <button id="expandButton" class="expandAuthor">
+            <h:graphicImage value="${pageContext.request.contextPath}/resources/images/arrow-down2.svg"
+                            id="arrow" class="img" alt="expandAuthorIcon"/>
+        </button>
+
+        <div id="expanded" class="infoText">
+            <p style="margin-top: 13px;"><a class="colourfulText"> Барашко Арсений</a></p>
+            <p>Группа:<a class="colourfulText"> P3234</a></p>
+            <p>Вариант:<a class="colourfulText"> 5789</a></p>
+            <br/>
+        </div>
+
+    </header>
+
+    <div class="controlPanel">
+        <h:form id="mainForm">
+
+            <div class="xSelectionPanel">
+                Введите X<br/>
+
+                <div id="xButtonsBlock">
+                    <h:inputText id="xField"
+                                 maxlength="15"
+                                 value="#{pointChecker.x}"
+                                 required="true"
+                                 requiredMessage="You should select X value"
+                                 validatorMessage="X value should be in range
+                                        (#{pointChecker.xMin}, #{pointChecker.xMax})"
+                                 converterMessage="X value should be a number">
+
+                        <f:validateDoubleRange minimum="#{pointChecker.xMin}" maximum="#{pointChecker.xMax}"/>
+                    </h:inputText>
+                </div>
+                <h:message id="vm1" styleClass="incorrectInputText" for="xField"/>
+            </div>
+
+            <div class="rSelectionPanel">
+                Выберите Y
+                <br/>
+                <h:selectOneRadio id="yButton" styleClass="yButton">
+                    <f:selectItem itemValue="-3" itemLabel="-3"/>
+                    <f:selectItem itemValue="-2" itemLabel="-2"/>
+                    <f:selectItem itemValue="-1" itemLabel="-1"/>
+                    <f:selectItem itemValue="0" itemLabel="0"/>
+                    <f:selectItem itemValue="1" itemLabel="1"/>
+                    <f:selectItem itemValue="2" itemLabel="2"/>
+                    <f:selectItem itemValue="3" itemLabel="3"/>
+                </h:selectOneRadio>
+                <h:inputText
+                        value="#{pointChecker.y}"
+                        style="display: none"
+                        id="yField"
+                        required="true"
+                        requiredMessage="You should select Y value">
+
+                    <f:validateDoubleRange minimum="#{pointChecker.yMin}" maximum="#{pointChecker.yMax}"/>
+                </h:inputText>
+                <h:message id="vm2" styleClass="incorrectInputText" for="yField"/>
+            </div>
+
+            <div class="rSelectionPanel">
+                Выберите R
+
+                <h:selectOneMenu id="rButtons" styleClass="rButtons" value="#{pointChecker.r}" required="true"
+                                  requiredMessage="You should select one R value">
+
+                    <f:selectItem itemValue="1" itemLabel="1"/>
+                    <f:selectItem itemValue="1.5" itemLabel="1.5"/>
+                    <f:selectItem itemValue="2" itemLabel="2"/>
+                    <f:selectItem itemValue="2.5" itemLabel="2.5"/>
+                    <f:selectItem itemValue="3" itemLabel="3"/>
+
+                </h:selectOneMenu>
+
+                <h:message id="vm3" styleClass="incorrectInputText" for="rButtons"/>
+            </div>
+            <div class="submitButtonsBlock">
+                <h:commandButton
+                        value="Check point"
+                        id="checkRequestButton"
+                        action="#{pointChecker.processRequest}">
+
+                    <f:ajax execute="mainForm" render="vm1 vm2 vm3"/>
+
+                </h:commandButton>
+                <br/>
+                <h:commandButton type="button" id="resetRequestButton" value="Reset values"/>
+            </div>
+
+            <label><input type="Reset" style="display: none" id="resetFormJSF"/></label>
+        </h:form>
+    </div>
+
+    <div id="secondaryPanel">
+        <div id="svgDiv">
+            <svg id="coordinatePlane" viewBox="0 0 500 500">
+                <g id="planeDots" style="visibility: hidden">
+                    <c:forEach items="${pointChecker.requests}" var="point">
+                        <c:choose>
+                            <c:when test="${point.result}">
+                                <circle
+                                        cx="${point.x * (220/point.r) + 250}"
+                                        cy="${-(point.y * (220/point.r) - 250)}"
+                                        r="5" fill="blue"
+                                        data-original-x="${point.x * (220/point.r) + 250}"
+                                        data-original-y="${-(point.y * (220/point.r) - 250)}"
+                                        data-radius="${point.r}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <circle
+                                        cx="${point.x * (220/point.r) + 250}"
+                                        cy="${-(point.y * (220/point.r) - 250)}"
+                                        r="5" fill="red"
+                                        data-original-x="${point.x * (220/point.r) + 250}"
+                                        data-original-y="${-(point.y * (220/point.r) - 250)}"
+                                        data-radius="${point.r}"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </g>
+
+                <line x1="0" y1="250" x2="500" y2="250" stroke="black" stroke-width="1" stroke-linecap="square"/>
+                <line x1="250" y1="0" x2="250" y2="500" stroke="black" stroke-width="1" stroke-linecap="square"/>
+
+
+                <line x1="30" y1="245" x2="30" y2="255" stroke="black" stroke-width="1" stroke-linecap="square"/>
+                <line x1="140" y1="245" x2="140" y2="255" stroke="black" stroke-width="1" stroke-linecap="square"/>
+                <line x1="360" y1="245" x2="360" y2="255" stroke="black" stroke-width="1" stroke-linecap="square"/>
+                <line x1="470" y1="245" x2="470" y2="255" stroke="black" stroke-width="1" stroke-linecap="square"/>
+
+
+                <line x1="245" y1="30" x2="255" y2="30" stroke="black" stroke-width="1" stroke-linecap="square"/>
+                <line x1="245" y1="140" x2="255" y2="140" stroke="black" stroke-width="1" stroke-linecap="square"/>
+                <line x1="245" y1="360" x2="255" y2="360" stroke="black" stroke-width="1" stroke-linecap="square"/>
+                <line x1="245" y1="470" x2="255" y2="470" stroke="black" stroke-width="1" stroke-linecap="square"/>
+
+
+                <text x="485" y="264">x</text>
+                <text x="236" y="15">y</text>
+                <text x="254" y="264">0</text>
+
+
+                <text style="visibility: hidden" class="markup mR" x="20" y="235">-R</text>
+                <text style="visibility: hidden" class="markup mR2" x="125" y="235">-R/2</text>
+                <text style="visibility: hidden" class="markup R2" x="353" y="235">R/2</text>
+                <text style="visibility: hidden" class="markup R" x="465" y="235">R</text>
+
+                <text style="visibility: hidden" class="markup mR" x="260" y="473">-R</text>
+                <text style="visibility: hidden" class="markup mR2" x="260" y="363">-R/2</text>
+                <text style="visibility: hidden" class="markup R2" x="260" y="145">R/2</text>
+                <text style="visibility: hidden" class="markup R" x="260" y="35">R</text>
+
+
+                <polygon points="250 30, 250 250, 140 250" fill="blue" opacity="0.2"/>
+                <rect x="250" y="30" width="110" height="220" fill="blue" opacity="0.2"/>
+                <path d="M 250 250  L 30 250    A 195 195 0 0 0 250 470    L 250 250"
+                      fill="blue" opacity="0.2"/>
+
+                <rect id="clickArea" width="100%" height="100%">
+                </rect>
+            </svg>
+        </div>
+
+        <div class="tableBlock">
+            <label>Recent results</label>
+            <h:dataTable value="#{pointChecker.requests}" var="req">
+                <h:column pt:style="width: 7%">
+                    <f:facet name="header">X</f:facet>
+                    ${req.x}
+                </h:column>
+
+                <h:column pt:style="width: 7%">
+                    <f:facet name="header">Y</f:facet>
+                    ${req.y}
+                </h:column>
+
+                <h:column pt:style="width: 7%">
+                    <f:facet name="header">R</f:facet>
+                    ${req.r}
+                </h:column>
+
+                <h:column pt:style="width: 9%">
+                    <f:facet name="header">Попала?</f:facet>
+
+                    <h:panelGroup rendered="#{req.result}">
+                        <span style="color: #72be00">Да</span>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{!req.result}">
+                        <span style="color: red">Нет</span>
+                    </h:panelGroup>
+                </h:column>
+
+                <h:column pt:style="width: 30%">
+                    <f:facet name="header">Время отправки</f:facet>
+                    ${req.requestTime}
+                </h:column>
+
+                <h:column pt:style="width: 30%">
+                    <f:facet name="header">Время работы</f:facet>
+                    ${req.executionTime} ms
+                </h:column>
+            </h:dataTable>
+
+        </div>
+    </div>
+
+</div>
+<script src="headerController.js"></script>
+<script src="mainPageController.js"></script>
+
+</body>
+
+</html>

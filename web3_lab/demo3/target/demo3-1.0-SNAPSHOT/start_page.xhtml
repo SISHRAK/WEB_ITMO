@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+
+<h:head>
+    <title>Clock page</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</h:head>
+
+<h:body style="background-color: #333">
+    <ui:include src="header.html" />
+
+    <main>
+        <div class="clock">
+            <span id="clockText">Time</span>
+        </div>
+    </main>
+
+    <div id="toMainDiv">
+        <h:form id="toMain">
+            <h:commandButton id="toMainButton" value="Перейти на основную страницу" action="/main.xhtml?faces-redirect=true" />
+        </h:form>
+    </div>
+</h:body>
+
+<script>
+    function updateClock() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        document.getElementById("clockText").textContent = hours + ":" + (minutes &lt; 10 ? "0" : "") + minutes + ":" + (seconds &lt; 10 ? "0" : "") + seconds;
+    }
+
+    setInterval(updateClock, 7000);
+    updateClock();
+</script>
+
+</html>

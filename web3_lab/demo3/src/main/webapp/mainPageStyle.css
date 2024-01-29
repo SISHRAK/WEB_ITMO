@@ -1,0 +1,424 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+
+header {
+    font-family: 'Montserrat', sans-serif;
+    grid-area: header;
+    z-index: 1;
+    border-bottom: 1px solid #dadce0;
+
+    width: 100%;
+    min-height: 52px;
+    text-align: center;
+    background-color: black;
+}
+
+header .logo {
+    font-family: 'Montserrat', sans-serif;
+    /*background-color: white;*/
+    z-index: 1;
+    float: left;
+    margin-left: 10px;
+
+    min-height: 47px;
+    min-width: 47px;
+
+    max-height: 40px;
+    max-width: 40px;
+
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+header .logo:hover {
+    transform: scale(1.1);
+}
+
+header .label {
+    font-family: 'Montserrat', sans-serif;
+    z-index: 0;
+    width: 100%;
+    position: absolute;
+    font-size: 100%;
+    color: white;
+    padding-top: 15px;
+}
+
+header .expandAuthor {
+    font-family: 'Montserrat', sans-serif;
+    z-index: 1;
+    float: right;
+    margin-right: 13px;
+    padding-top: 17px;
+
+    max-height: 20px;
+    max-width: 20px;
+
+    border: 0;
+    opacity: 40%;
+    transition: 0.3s;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+header .expandAuthor:hover {
+    opacity: 60%;
+}
+
+header .expandAuthor .img {
+    max-width: inherit;
+    max-height: inherit;
+}
+
+.infoText {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    text-align: center;
+    background-color: indianred;
+    color: white;
+
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.infoText .colourfulText {
+    color: white;
+}
+
+.wrapper {
+    grid-template-rows: max-content auto min-content;
+    width: 100%;
+    height: 100%;
+    min-height: 1fr;
+    display: grid;
+    grid-template-areas:
+    "header"
+    "control"
+    "secondary"
+    "footer";
+}
+
+@media (min-width: 1000px) {
+    .wrapper {
+        grid-template-rows: max-content auto min-content;
+        grid-template-columns: 6fr 3fr;
+        grid-template-areas:
+            "header header"
+            "control secondary"
+            "footer footer";
+    }
+}
+
+.controlPanel {
+    grid-area: control;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0 0 15px 0 lightblue;
+    margin: 20px;
+    padding: 40px;
+    border-radius: 15px;
+    background-color: lightblue;
+}
+
+.controlPanel label {
+    font-size: 100%;
+    box-sizing: border-box;
+}
+
+.xSelectionPanel {
+    display: block;
+    padding-top: 10px;
+    border-width: 0;
+    box-sizing: border-box;
+    text-align: center;
+    width: 100%;
+    height: 5fr;
+    float: left;
+}
+
+.colourfulText {
+    color: #ccccff;
+}
+
+#xButtonsBlock {
+    padding-top: 7px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.xButton {
+    border: 1px solid #dadce0;
+    border-radius: 3px;
+    height: 20px;
+    width: 24px;
+    display: block;
+    cursor: pointer;
+    margin-top: 1.5%;
+}
+
+.xButton:hover {
+    background-color: #e5e5e5;
+}
+
+.xLabels {
+    display: inline-block;
+}
+
+select {
+    padding-left: 10px;
+    background-color: #f3f3f3;
+    border-style: none;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 30%;
+    height: 15%;
+    border-radius: 5px
+}
+
+select:hover {
+    border: 1px solid #dadce0;
+    background-color: #eeeeee;
+}
+
+option {
+    background-color: white;
+}
+
+option:hover {
+    background-color: black;
+}
+
+select:focus {
+    outline: none;
+}
+
+.ySelectionPanel {
+    padding-top: 15px;
+    box-sizing: border-box;
+    text-align: center;
+    display: block;
+    width: 100%;
+    height: 5fr;
+    float: left;
+}
+.colourfulText {
+    color: #0076d2;
+}
+
+.ySelectionPanel input {
+    padding-left: 1%;
+    background-color: #f3f3f3;
+    border-style: none;
+    cursor: text;
+    margin-top: 1.5%;
+    width: 30%;
+    height: 28px;
+    border-radius: 5px;
+}
+
+.ySelectionPanel input:focus {
+    outline: none;
+    border: 1px solid #dadce0;
+    background-color: #eeeeee;
+}
+
+.rSelectionPanel {
+    padding-top: 15px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: center;
+    flex-direction: row;
+}
+
+.rSelectionPanel table {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.rSelectionPanel td {
+    padding: 10px;
+}
+
+.rSelectionPanel input {
+    cursor: pointer;
+}
+
+.colourfulText {
+    color: #0076d2;
+}
+
+.rButtons {
+    cursor: pointer;
+}
+
+div[name="requestButtonsBlock"] {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    float: left;
+}
+
+.incorrectInputText {
+    margin-top: 15px;
+    display: block;
+    color: red;
+}
+
+.submitButtonsBlock {
+    padding-top: 15px;
+}
+#mainForm\:checkRequestButton {
+    background-color: #444141;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border: none;
+}
+
+#mainForm\:checkRequestButton:hover {
+    background-image: linear-gradient(90deg, #53cbef 0%, #dcc66c 50%, #ffa3b6 75%, #53cbef 100%);
+    animation: slidernbw 5s linear infinite;
+    color: #000;
+}
+
+@keyframes slidernbw {
+    to {
+        background-position: 20vw;
+    }
+}
+
+
+
+
+#mainForm\:resetRequestButton {
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 2%;
+    color: white;
+    background-color: #404040;
+    border-style: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
+    height: 30px;
+    opacity: 0.7;
+}
+
+#mainForm\:resetRequestButton:hover {
+    background-color: #963323;
+    opacity: 0.9;
+}
+
+#secondaryPanel {
+    display: flex;
+    box-sizing: border-box;
+    border-radius: 15px;
+    grid-area: secondary;
+    margin: 20px;
+    flex-direction: column;
+}
+
+#svgDiv {
+    float: left;
+    display: block;
+    box-sizing: border-box;
+
+    box-shadow: 0 0 15px 0 #e3e3e3;
+    border-radius: 15px;
+    background-color: lightblue;
+}
+
+#clickArea {
+    cursor: pointer;
+    opacity: 0;
+}
+
+.tableBlock {
+    height: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: center;
+    display: block;
+    float: left;
+    margin-top: 20px;
+    width: 100%;
+    box-shadow: 0 0 15px 0 #e3e3e3;
+    border-radius: 15px;
+    background-color: lightblue;
+}
+
+.tableBlock label {
+    width: 100%;
+    float:left;
+    padding-top: 5px;
+    color: indianred;
+}
+
+.execTime {
+    width: 30%;
+}
+
+.tableBlock tbody {
+    width: 100%;
+}
+
+
+#secondaryPanel .tableBlock > table {
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+    float: left;
+    display: block;
+    margin-top: 5px;
+    width: 100%;
+    min-height: 200px;
+    max-height: 200px;
+}
+
+footer {
+    align-self: end;
+    grid-area: footer;
+
+    z-index: 1;
+    box-shadow: 0 0 15px 0 #e3e3e3;
+    padding-top: 20px;
+    color: white;
+    height: 80px;
+    /*background-color: #0076d2;*/
+    background-color: #404040;
+    text-align: center;
+}
+
+footer .github {
+    opacity: 0.7;
+    margin-top: 10px;
+    width: 25px;
+}
+
+footer .github:hover {
+    opacity: 1;
+}
